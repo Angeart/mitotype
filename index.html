@@ -224,10 +224,12 @@
     <script>
         $.ionSound({
             sounds: [
-                {name:"snap"},
+                { name: "snap" },
             ],
             path: "sounds/",
-            preload: true
+            preload: true,
+            multiplay: true,
+            volume: 0.9
         });
 
         var MutekiTimer = (function () {
