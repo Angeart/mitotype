@@ -517,7 +517,7 @@
                                 c = input_data.text().substr(0, 1);
                                 val = c.charCodeAt(0);
                             }
-                            if (String.fromCharCode(e.keyCode).localeCompare(val, "en", { sensitivity: "base" }) == 0) {
+                            if (String.fromCharCode(e.keyCode).localeCompare(c, "en", { sensitivity: "base" }) == 0) {
                                 $.ionSound.play("snap");
                                 input_data.text(input_data.text().slice(1));
                                 done.text(done.text() + c);
