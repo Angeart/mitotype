@@ -211,6 +211,12 @@
         background-repeat: no-repeat;
         margin: calc(32px * 0.25);
     }
+
+    p.break {
+        word-break: break-all;
+        max-width: 100vw;
+        white-space: normal;
+    }
 </style>
 
 <body class="state_0" oncontextmenu="return false;">
@@ -354,6 +360,26 @@
 
             return array;
         }
+        const pixel_per_em = Number(getComputedStyle(document.body, null).fontSize.replace(/[^\d]/g, ''));
+
+        function char_count(str) {
+            let len = 0;
+            str = escape(str);
+            for (let i = 0; i < str.length; i++ , len++) {
+                if (str.charAt(i) == "%") {
+                    if (str.charAt(++i) == "u") {
+                        i += 3;
+                        len++;
+                    }
+                    i++;
+                }
+            }
+            return len;
+        }
+
+        function str_pixel(str) {
+            return char_count(str) * pixel_per_em
+        }
 
 
         let state = 0;
@@ -405,13 +431,15 @@
                 , 'anarogu gotastu'
                 , 'yo-roppa kikaku'
                 , 'gurushan'
+                , 'herapin'
+                , 'yurusanelekarana omae'
+                , 'kiritokana-yappa w mukashikarakiritoniniterutteyokuiwareru w kigatsuitaramawaridehitotokataoretetashi w demooresonotokinokiokunainndayone w'
             ];
             let trophies = [
                 , '3分と言わず今死ね'
                 , 'クソザコナメクジ'
                 , 'サブカルクソムカデ'
                 , '血糊クッキー'
-                , '一生たってろ'
                 , 'もみじ'
                 , 'クソザコパンチ'
                 , '七草'
@@ -489,7 +517,7 @@
                                 c = input_data.text().substr(0, 1);
                                 val = c.charCodeAt(0);
                             }
-                            if (String.fromCharCode(e.keyCode).localeCompare(val, "en", {sensitivity: "base"}) == 0) {
+                            if (String.fromCharCode(e.keyCode).localeCompare(val, "en", { sensitivity: "base" }) == 0) {
                                 $.ionSound.play("snap");
                                 input_data.text(input_data.text().slice(1));
                                 done.text(done.text() + c);
@@ -544,8 +572,12 @@
                     text_data = shuffle(text_data);
                     current = 0;
                 }
-                $('.done').text('');
-                $('.wait').text(text_data[current]);
+                $('.done').text('').removeClass('break');
+                $('.wait').text(text_data[current]).removeClass('break');
+                if (str_pixel(text_data[current]) > window.innerWidth) {
+                    $('.done').addClass('break');
+                    $('.wait').addClass('break');
+                }
             };
             function clear() {
                 remain = remain_default;
@@ -568,7 +600,7 @@
                 href += '&text=' + text;
                 var hashs = $('meta[name=hash]');
                 let hash_data = "";
-                for(var hash of hashs){
+                for (var hash of hashs) {
                     hash_data += $(hash).attr('content') + ",";
                 }
                 if (hash_data != "") href += '&hashtags=' + hash_data;
