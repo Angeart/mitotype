@@ -362,6 +362,8 @@
                 , 'これがバーチャルYouTuberなんだよなぁ…'
                 , 'かえみとを末永くよろしくお願いします'
             ]
+            let max = 1000 * 10;
+            let max_score = max * text_data.length;
             let current = 0;
             let time = 0;
             let score = 0;
@@ -442,7 +444,6 @@
                 }
             }
             function score_calc() {
-                let max = 1000 * 10;
                 let cof = (max - time) < 0 ? 0 : (max - time);
                 cof -= (cof % 10);
                 score += cof;
@@ -461,8 +462,9 @@
             }
             function set_result() {
                 $('.result .score_result p').text(score);
-                let trophies = ['test'];
-                $('.result .trophy p').text('hoge');
+                let selector = Math.floor((score / max_score)*trophies.length);
+                if(selector > trophies.length) selector = trophies.length - 1;
+                $('.result .trophy p').text(trophies[selector]);
             }
             function start() {
                 text_data = shuffle(text_data);
