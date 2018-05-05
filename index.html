@@ -219,8 +219,17 @@
         </div>
         <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
             crossorigin="anonymous"></script>
+        <script src="./js/ion.sound.js"></script>
     </div>
     <script>
+        $.ionSound({
+            sounds: [
+                {name:"snap"},
+            ],
+            path: "sounds/",
+            preload: true
+        });
+
         var MutekiTimer = (function () {
             var MutekiTimer = function () {
                 initialize.apply(this, arguments);
@@ -419,6 +428,7 @@
                                 val = c.charCodeAt(0);
                             }
                             if (e.keyCode == val) {
+                                $.ionSound.play("snap");
                                 input_data.text(input_data.text().slice(1));
                                 done.text(done.text() + c);
                                 if (input_data.text().length == 0) {
@@ -468,8 +478,8 @@
             }
             function set_result() {
                 $('.result .score_result p').text(score);
-                let selector = Math.floor((score / max_score)*trophies.length);
-                if(selector > trophies.length) selector = trophies.length - 1;
+                let selector = Math.floor((score / max_score) * trophies.length);
+                if (selector > trophies.length) selector = trophies.length - 1;
                 $('.result .trophy p').text(trophies[selector]);
             }
             function start() {
