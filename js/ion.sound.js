@@ -198,6 +198,7 @@
 
     if (AudioContext) {
         audio = new AudioContext();
+        ion.sound.audio = audio;
     }
 
 
@@ -390,6 +391,7 @@
             } else {
                 this.streams[0].play(this.options);
             }
+            ion.sound.audio.resume();
         },
 
         stop: function (options) {
