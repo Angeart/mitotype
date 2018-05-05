@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="hash" content="みとたいぴんぐ">
+    <meta name="hash" content="月ノ美兎">
     <title>みとたいぴんぐ</title>
 </head>
 <style>
@@ -565,8 +566,12 @@
                 href += '?url=' + escape(location.origin + location.pathname);
                 var text = "score : " + $('.result .score_result p').text() + " - " + $('.result .trophy p').text() + " " + location.href;
                 href += '&text=' + text;
-                var hash = $('meta[name=hash]').attr('content');
-                if (hash !== undefined & hash != "") href += '&hashtags=' + hash;
+                var hashs = $('meta[name=hash]');
+                let hash_data = "";
+                for(var hash of hashs){
+                    hash_data += hash.attr('content') + ",";
+                }
+                if (hash_data != "") href += '&hashtags=' + hash_data;
                 var left = (window.screen.width - 550) * 0.5;
                 var top = (window.screen.height - 420) * 0.5;
                 window.open(href, '_blank', 'left=' + left + ', top=' + top + ', toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=yes, width=' + 550 + ', height=' + 420);
