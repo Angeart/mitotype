@@ -179,6 +179,11 @@
         font-size: 10em;
         margin-bottom: -0.5em;
     }
+
+    .invisible {
+        position: absolute;
+        display: none;
+    }
 </style>
 
 <body class="state_0">
@@ -217,15 +222,19 @@
                 <p class="wait">monndai</p>
             </div>
         </div>
-        <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-            crossorigin="anonymous"></script>
-        <script src="./js/ion.sound.js"></script>
+        <input type="button" class="invisible">
     </div>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous"></script>
+    <script>
+        $('.invisible').trigger("click");
+    </script>
+    <script src="./js/ion.sound.js"></script>
     <script>
         $.ionSound({
             sounds: [
                 { name: "snap" },
-                { name: "door_bell"}
+                { name: "door_bell" }
             ],
             path: "sounds/",
             preload: true,
