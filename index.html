@@ -19,6 +19,9 @@
         display: flex;
         justify-content: center;
         align-items: center;
+        background-image: url(./img/mito01.jpg);
+        background-blend-mode: screen;
+        background-color: #888;
     }
 
     .input {
@@ -190,6 +193,9 @@
             <div class="trophy">
                 <p>クソザコムカデ</p>
             </div>
+            <div class="msg">
+                <p>Enter で 最初に戻る</p>
+            </div>
         </div>
     </div>
     <div class="input">
@@ -317,7 +323,45 @@
                 , 'madanenainolo?'
                 , 'kittane'
                 , 'kaemitohaiizo'
+                , 'makuraeigyou'
+                , 'mukadeninngenn'
+                , 'watakushidekakusanakya'
+                , 'higuchikaede'
+                , 'kusozakopanchiyametekudasai'
+                , 'zassou somurie zassou i-ta-'
             ];
+            let trophies = [
+                , '3分と言わず今死ね'
+                , 'クソザコナメクジ'
+                , 'サブカルクソムカデ'
+                , '血糊クッキー'
+                , '一生たってろ'
+                , 'もみじ'
+                , 'クソザコパンチ'
+                , '七草'
+                , 'ゴリラ'
+                , 'トップ'
+                , '洗濯機'
+                , 'カブトガニ'
+                , '血吐き少女'
+                , 'はふ'
+                , 'よいしょ'
+                , 'ムカデ人間'
+                , '赤子の拳'
+                , 'みょうが'
+                , '中腰委員長'
+                , '納豆'
+                , 'ヘテロヘテロ'
+                , 'クローバー'
+                , 'もやすぜ'
+                , '清楚(Vtuber)'
+                , '雑草コンプ'
+                , '清純系委員長'
+                , '成績優秀容姿端麗ポケモンマスター'
+                , '頭脳明晰容姿端麗ポケモンマスター'
+                , 'これがバーチャルYouTuberなんだよなぁ…'
+                , 'かえみとを末永くよろしくお願いします'
+            ]
             let current = 0;
             let time = 0;
             let score = 0;
@@ -359,9 +403,15 @@
                             let input_data = $('.wait');
                             let c = input_data.text().substr(0, 1);
                             let val = c.charCodeAt(0);
+                            let done = $('.done');
+                            if (c == ' ') {
+                                done.text(done.text() + c);
+                                input_data.text(input_data.text().slice(1));
+                                c = input_data.text().substr(0, 1);
+                                val = c.charCodeAt(0);
+                            }
                             if (e.keyCode == val) {
                                 input_data.text(input_data.text().slice(1));
-                                let done = $('.done');
                                 done.text(done.text() + c);
                                 if (input_data.text().length == 0) {
                                     ++current;
@@ -375,12 +425,17 @@
                         // wait end
                         break;
                     case 4:
+                        {
+                            if (e.keyCode == 13)
+                                status_change(undefined, 0);
+                        }
                         // result
                         break;
                 };
             });
-            function status_change(cb) {
+            function status_change(cb, val) {
                 ++state;
+                if (val != undefined && val == 0) state = val;
                 $('body').removeClass().addClass('state_' + state);
                 if (cb) {
                     cb();
