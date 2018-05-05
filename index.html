@@ -488,6 +488,7 @@
                 if(rate >= 1)rate = 1;
                 rate = 1 - rate;
                 cof *= rate;
+                cof = Math.round(cof);
                 score += cof;
                 time = 0;
                 miss_count = 0;
