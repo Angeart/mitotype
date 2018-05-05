@@ -225,6 +225,7 @@
         $.ionSound({
             sounds: [
                 { name: "snap" },
+                { name: "door_bell"}
             ],
             path: "sounds/",
             preload: true,
@@ -435,6 +436,7 @@
                                 done.text(done.text() + c);
                                 if (input_data.text().length == 0) {
                                     ++current;
+                                    $.ionSound.play("door_bell");
                                     set();
                                     score_calc();
                                 }
