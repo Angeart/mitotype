@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>美兎たいぷ</title>
+    <title>みとたいぴんぐ</title>
 </head>
 <style>
     * {
@@ -104,7 +104,7 @@
         opacity: 0;
     }
 
-    .start p {
+    .start p.anim {
         font-size: 4em;
         animation-name: start;
         animation-duration: 3s;
@@ -174,11 +174,17 @@
         text-align: center;
         font-size: 1em;
     }
+
+    #title {
+        font-size: 10em;
+        margin-bottom: -0.5em;
+    }
 </style>
 
 <body class="state_0">
     <div class="start">
-        <p>Enter で start</p>
+        <p id="title">みとたいぴんぐ</p>
+        <p class="anim">Enter で start</p>
     </div>
     <div class="wait_screen">
         <div class="count_down">
