@@ -22,6 +22,8 @@
         background-image: url(./img/mito01.jpg);
         background-blend-mode: screen;
         background-color: #888;
+        background-size: contain;
+        background-position: center;
     }
 
     .input {
@@ -342,7 +344,6 @@
                 , 'yametokee!'
                 , 'manjino2jou'
                 , 'manjino5jou'
-                , 'higutikaede'
                 , 'mukadero-n'
                 , 'suikomaresou'
                 , 'kanopippi'
@@ -485,7 +486,7 @@
                 cof -= (cof % 10);
                 let max_miss = 20;
                 let rate = (miss_count / max_miss);
-                if(rate >= 1)rate = 1;
+                if (rate >= 1) rate = 1;
                 rate = 1 - rate;
                 cof *= rate;
                 cof *= $('.done').text().length / 15;
@@ -495,7 +496,10 @@
                 miss_count = 0;
             }
             function set() {
-                if (current >= text_data.length) return;
+                if (current >= text_data.length) {
+                    text_data = shuffle(text_data);
+                    current = 0;
+                }
                 $('.done').text('');
                 $('.wait').text(text_data[current]);
             };
