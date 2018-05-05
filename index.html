@@ -234,7 +234,10 @@
         $.ionSound({
             sounds: [
                 { name: "snap" },
-                { name: "door_bell" }
+                { name: "door_bell" },
+                { name: "correct2" },
+                { name: "incorrect1" },
+                { name: "people_people-stadium-applause1" },
             ],
             path: "sounds/",
             preload: true,
@@ -398,6 +401,7 @@
             let count_down = 3;
             let count_down_handle = undefined;
             let score_wait = false;
+            let miss_count = 0;
             $('body').on('keypress', function (e) {
                 switch (state) {
                     case 0:
@@ -445,10 +449,13 @@
                                 done.text(done.text() + c);
                                 if (input_data.text().length == 0) {
                                     ++current;
-                                    $.ionSound.play("door_bell");
+                                    $.ionSound.play("correct2");
                                     set();
                                     score_calc();
                                 }
+                            } else {
+                                ++miss_count;
+                                $.ionSound.play("incorrect1");
                             }
                         }
                         break;
@@ -475,8 +482,14 @@
             function score_calc() {
                 let cof = (max - time) < 0 ? 0 : (max - time);
                 cof -= (cof % 10);
+                let max_miss = 20;
+                let rate = (miss_count / max_miss);
+                if(rate >= 1)rate = 1;
+                rate = 1 - rate;
+                cof *= rate;
                 score += cof;
                 time = 0;
+                miss_count = 0;
             }
             function set() {
                 if (current >= text_data.length) return;
@@ -488,6 +501,7 @@
                 current = 0;
                 time = 0;
                 score = 0;
+                miss_count = 0;
             }
             function set_result() {
                 $('.result .score_result p').text(score);
