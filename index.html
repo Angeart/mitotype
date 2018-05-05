@@ -451,8 +451,8 @@
                                 if (input_data.text().length == 0) {
                                     ++current;
                                     $.ionSound.play("correct2");
-                                    set();
                                     score_calc();
+                                    set();
                                 }
                             } else {
                                 ++miss_count;
@@ -488,6 +488,7 @@
                 if(rate >= 1)rate = 1;
                 rate = 1 - rate;
                 cof *= rate;
+                cof *= $('.done').text().length / 15;
                 cof = Math.round(cof);
                 score += cof;
                 time = 0;
