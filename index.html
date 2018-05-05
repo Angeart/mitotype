@@ -569,7 +569,7 @@
                 var hashs = $('meta[name=hash]');
                 let hash_data = "";
                 for(var hash of hashs){
-                    hash_data += hash.attr('content') + ",";
+                    hash_data += $(hash).attr('content') + ",";
                 }
                 if (hash_data != "") href += '&hashtags=' + hash_data;
                 var left = (window.screen.width - 550) * 0.5;
