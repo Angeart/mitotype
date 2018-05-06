@@ -477,12 +477,9 @@
                 , 'クソザコパンチ'
                 , '七草'
                 , 'ゴリラ'
-                , 'トップ'
                 , '洗濯機'
                 , 'カブトガニ'
                 , '血吐き少女'
-                , 'はふ'
-                , 'よいしょ'
                 , 'ムカデ人間'
                 , '赤子の拳'
                 , 'みょうが'
@@ -494,7 +491,6 @@
                 , '清楚(Vtuber)'
                 , '雑草コンプ'
                 , '清純系委員長'
-                , '成績優秀容姿端麗ポケモンマスター'
                 , '頭脳明晰容姿端麗ポケモンマスター'
                 , 'これがバーチャルYouTuberなんだよなぁ…'
                 , 'かえみとを末永くよろしくお願いします'
@@ -628,7 +624,7 @@
             }
             function set_result() {
                 $('.result .score_result p').text(score);
-                let selector = Math.floor((score / max_score) * trophies.length);
+                let selector = Math.floor((score / max_score) * trophies.length * 1.1);
                 if (selector > trophies.length) selector = trophies.length - 1;
                 $('.result .trophy p').text(trophies[selector]);
             }
