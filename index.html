@@ -12,6 +12,7 @@
 ■■   ■      ■■ ■■     ■■   ■■     ■■          ■            ■■      ■         ■ ■   ■ ■
 ■  ■■      ■■   ■■■■      ■■       ■■■■■■     ■■■■■■     ■■■        ■■■■■■     ■   ■■■
  -->
+
 <head>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/siimple@3.0.0/dist/siimple.min.css">
     <meta charset="UTF-8">
@@ -282,14 +283,69 @@
     </script>
     <script src="./js/ion.sound.js"></script>
     <script>
+        let text_data = [
+            { name: "3分とは言わず今死ね", data: "3huntoha iwazu imashine" },
+            { name: "BAN", data: "ban" },
+            { name: "BBS", data: "bbs" },
+            { name: "linenews", data: "line news" },
+            { name: "men is forest women is river", data: "men is forest. woman is river." },
+            { name: "oldold", data: "old old" },
+            { name: "thatplace", data: "that place" },
+            { name: "X8", data: " xxxxxxxx" },
+            { name: "あっふーん", data: "a...fuuun" },
+            { name: "アナログ炬燵", data: "anaroggotatsu" },
+            { name: "アナログ炬燵2", data: "anaroggotatsu" },
+            { name: "あらまぁ", data: "aramala" },
+            { name: "イキリト", data: "ore su ga ikebo dakarasa ichiou otaku dakedo kanojo irushi orette hikenai seikakudashi sokorahentoka meccha niterutte iwareru akuryokumo 31kiro atte kurasu no joshi ni takarareru kanojo irukara yamero ore koredemo chuuichi desuyo kanojo ha asuna ni desu (kiitenele)" },
+            { name: "えやってないですよあたくし", data: "e, yattenaidesuyo atakushi" },
+            { name: "おっなんだ？ファックだと？", data: "oltunanda? fuck dato?" },
+            { name: "おるやんけおるやんけどなたかおるやんけ", data: "oruyanke oruyanke donatakaoruyanke" },
+            { name: "クソゲー乙", data: "kusoge-otsu" },
+            { name: "クソザコイングリッシュ", data: "kusozako english" },
+            { name: "クソザコパンチやめてください", data: "kusozako panchi yametekudasai" },
+            { name: "グルシャン", data: "gurusyan" },
+            { name: "クローバー", data: "kuro-ba-" },
+            { name: "コココココン", data: "kokokokokokonn" },
+            { name: "これがVirtualYoutuberなんだよなぁ", data: "korega virtual youtuber nandayonaa..." },
+            { name: "スッペラピッチョン2", data: "supperapichon" },
+            { name: "っく", data: "kku" },
+            { name: "トレーディングカードゲーム", data: "tore-delingu ka-doge-mu" },
+            { name: "ネズミの死骸", data: "nezumi no shigai" },
+            { name: "パンツマンさん", data: "pantsuman san" },
+            { name: "ふざけんなおまえ", data: "huzakennna omae" },
+            { name: "ヘテロヘテロ", data: "hetero hetero" },
+            { name: "ムカデ人間2", data: "mukadeningen" },
+            { name: "もみじ", data: "momiji" },
+            { name: "わたくし2", data: "watakushi" },
+            { name: "わたくしで隠さなきゃ", data: "watakushide kakusanakya" },
+            { name: "覚せい剤を追放しよう", data: "kakuseizai wo tsuihoushiyou" },
+            { name: "許さねぇからなお前", data: "yurusanelekarana omae" },
+            { name: "緊急事態", data: "kinkyuujitai" },
+            { name: "愚の直行", data: "guno chokkou" },
+            { name: "警察舐めとんちゃうぞこら", data: "keisatsu nametonchauzo kora" },
+            { name: "血吐き少女", data: "chi hakisyoujo" },
+            { name: "校庭に生えてる草のコンプ", data: "kouteini haeteru kusanokonpu" },
+            { name: "砂糖卵小麦粉", data: "satou tamago komugiko" },
+            { name: "雑草", data: "zassou" },
+            { name: "三角関係", data: "sankakukankei" },
+            { name: "死んだ胎児", data: "shinda taiji" },
+            { name: "実質会食", data: "jisshitsu kaisyoku" },
+            { name: "酒井ぃ？名前覚えたからなぁ", data: "sakai? namaeoboetakarana..." },
+            { name: "親友が教室でウンコ漏らしたら自分もウンコ漏らすべきなんですよ", data: "shinyuuga kyoushitsude unko morashitara jibunmo unko morasubeki nandesuyo" },
+            { name: "川の中の石を割る", data: "kawa no nakano ishi wo waru" },
+            { name: "洗濯機2", data: "sentaki" },
+            { name: "中腰", data: "chuugoshi" },
+            { name: "頭脳明晰容姿端麗ポケモンマスター", data: "zunoumeiseki youshitanrei pokemonmasuta-" },
+            { name: "彼とチューしたいって思っちゃんたんですよねわたくし", data: "kareto chu-shitaitte omocchattandesuyone watakushi" },];
+        let base_sounds = [
+            { name: "snap" },
+            { name: "door_bell" },
+            { name: "correct2" },
+            { name: "incorrect1" },
+            { name: "people_people-stadium-applause1" },
+        ];
         $.ionSound({
-            sounds: [
-                { name: "snap" },
-                { name: "door_bell" },
-                { name: "correct2" },
-                { name: "incorrect1" },
-                { name: "people_people-stadium-applause1" },
-            ],
+            sounds: base_sounds.concat(text_data.map((v)=>{ return {name: v.name}; })),
             path: "sounds/",
             preload: true,
             multiplay: true,
@@ -399,54 +455,6 @@
         (() => {
             let remain_default = 99;
             let remain = remain_default;
-            let text_data = [
-                'kaemito'
-                , 'moyasuze'
-                , 'tyuugoshi'
-                , 'sentakuki'
-                , 'gekidan'
-                , 'BAN'
-                , 'dero-n suki'
-                , 'naandesuru-suruno!?'
-                , 'zassou'
-                , 'yametokee!'
-                , 'manjino 2 jou'
-                , 'manjino 5 jou'
-                , 'mukadero-n'
-                , 'suikomaresou'
-                , 'kanopippi'
-                , 'karepippi'
-                , 'watashi no kanopippi'
-                , 'megami...ka?'
-                , 'zeri- wo nomu'
-                , 'rikiya'
-                , 'keisatsu 24ji'
-                , 'kusozakonamekuji'
-                , 'ikirito'
-                , 'madanenainolo?'
-                , 'kittane'
-                , 'kaemito ha iizo'
-                , 'makura eigyou'
-                , 'mukade ninngenn'
-                , 'watakushi de kakusanakya'
-                , 'higuchi kaede'
-                , 'kusozakopanchi yametekudasai'
-                , 'zassou somurie zassou i-ta-'
-                , 'menkai'
-                , 'watakushi'
-                , 'pantsuman sann'
-                , 'kaishoku'
-                , 'sakaili? namae oboetakaranala...'
-                , 'kaeru'
-                , 'nn heltueenn ...'
-                , 'line news'
-                , 'anarogu gotastu'
-                , 'yo-roppa kikaku'
-                , 'gurushan'
-                , 'herapin'
-                , 'yurusanelekarana omae'
-                , 'kiritokana-yappa w mukashikarakiritoniniterutteyokuiwareru w kigatsuitaramawaridehitotokataoretetashi w demooresonotokinokiokunainndayone w'
-            ];
             let trophies = [
                 , '3分と言わず今死ね'
                 , 'クソザコナメクジ'
@@ -585,8 +593,9 @@
                     current = 0;
                 }
                 $('.done').text('').removeClass('break');
-                $('.wait').text(text_data[current]).removeClass('break');
-                if (str_pixel(text_data[current]) > window.innerWidth) {
+                $('.wait').text(text_data[current].data).removeClass('break');
+                $.ionSound.play(text_data[current].name);
+                if (str_pixel(text_data[current].data) > window.innerWidth) {
                     $('.done').addClass('break');
                     $('.wait').addClass('break');
                 }
