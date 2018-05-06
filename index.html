@@ -295,9 +295,9 @@
             { name: "BAN", data: "ban" },
             { name: "BBS", data: "bbs" },
             { name: "linenews", data: "line news" },
-            { name: "men is forest women is river", data: "men is forest. woman is river." },
+            { name: "men is forest women is river", data: "men is forest. woman is river.", noregex: true },
             { name: "oldold", data: "old old" },
-            { name: "thatplace", data: "that place" },
+            { name: "thatplace", data: "that place" , noregex: true},
             { name: "X8", data: " xxxxxxxx" },
             { name: "あっふーん", data: "a...fuuun" },
             { name: "アナログ炬燵", data: "anarogugotatsu" },
@@ -605,7 +605,7 @@
                 }
                 $('.done').text('').removeClass('break');
                 let text = text_data[current].data;
-                if(require_l2x) {
+                if(require_l2x && text_data[current].noregex === undefined) {
                     text = text.replace(/l([aiueot])/g,"x$1");
                 }
                 $('.wait').text(text).removeClass('break');
