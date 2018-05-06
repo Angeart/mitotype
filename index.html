@@ -496,7 +496,7 @@
                 , 'かえみとを末永くよろしくお願いします'
             ]
             let max = 1000 * 10;
-            let max_score = max * text_data.length;
+            let max_score = max * text_data.length * 0.6;
             let current = 0;
             let time = 0;
             let score = 0;
@@ -632,7 +632,7 @@
                 event.preventDefault();
                 var href = $(this).attr('href');
                 href += '?url=' + escape(location.origin + location.pathname);
-                var text = "score : " + $('.result .score_result p').text() + " - " + $('.result .trophy p').text() + " " + location.href;
+                var text = "score : " + $('.result .score_result p').text() + " - " + $('.result .trophy p').text();
                 href += '&text=' + text;
                 var hashs = $('meta[name=hash]');
                 let hash_data = "";
