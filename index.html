@@ -61,6 +61,7 @@
 
     .state_0 .start {
         opacity: 1;
+        z-index: 100;
     }
 
     .state_1 .wait_screen {
@@ -70,6 +71,7 @@
 
     .state_4 .result {
         opacity: 1;
+        z-index: 100;
     }
 
     .input {
@@ -236,6 +238,11 @@
     <div class="start">
         <p id="title">みとたいぴんぐ</p>
         <p class="anim">Enter で start</p>
+        <label class="siimple-label">オプション: </label>
+        <select class="siimple-select">
+            <option selected>小文字l派</option>
+            <option>小文字x派</option>
+        </select>
     </div>
     <div class="wait_screen">
         <div class="count_down">
@@ -293,8 +300,8 @@
             { name: "thatplace", data: "that place" },
             { name: "X8", data: " xxxxxxxx" },
             { name: "あっふーん", data: "a...fuuun" },
-            { name: "アナログ炬燵", data: "anaroggotatsu" },
-            { name: "アナログ炬燵2", data: "anaroggotatsu" },
+            { name: "アナログ炬燵", data: "anarogugotatsu" },
+            { name: "アナログ炬燵2", data: "anarogugotatsu" },
             { name: "あらまぁ", data: "aramala" },
             { name: "イキリト", data: "ore su ga ikebo dakarasa ichiou otaku dakedo kanojo irushi orette hikenai seikakudashi sokorahentoka meccha niterutte iwareru akuryokumo 31kiro atte kurasu no joshi ni takarareru kanojo irukara yamero ore koredemo chuuichi desuyo kanojo ha asuna ni desu (kiitenele)" },
             { name: "えやってないですよあたくし", data: "e, yattenaidesuyo atakushi" },
@@ -347,7 +354,7 @@
             { name: "people_people-stadium-applause1" },
         ];
         $.ionSound({
-            sounds: base_sounds.concat(text_data.map((v)=>{ return {name: v.name}; })),
+            sounds: base_sounds.concat(text_data.map((v) => { return { name: v.name }; })),
             path: "sounds/",
             preload: true,
             multiplay: true,
@@ -498,6 +505,7 @@
             let count_down_handle = undefined;
             let score_wait = false;
             let miss_count = 0;
+            let require_l2x = false;
             $('body').on('keypress', function (e) {
                 var charCode = (typeof e.which == "number") ? e.which : e.keyCode;
                 switch (state) {
@@ -596,7 +604,11 @@
                     current = 0;
                 }
                 $('.done').text('').removeClass('break');
-                $('.wait').text(text_data[current].data).removeClass('break');
+                let text = text_data[current].data;
+                if(require_l2x) {
+                    text = text.replace(/l([aiueot])/g,"x$1");
+                }
+                $('.wait').text().removeClass('break');
                 $.ionSound.play(text_data[current].name);
                 if (str_pixel(text_data[current].data) > window.innerWidth) {
                     $('.done').addClass('break');
@@ -634,6 +646,7 @@
             });
             function start() {
                 text_data = shuffle(text_data);
+                require_l2x = ($('select').val() == "小文字x派");
                 clear();
                 set();
                 if (!first) return;
