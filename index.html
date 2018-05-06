@@ -497,11 +497,12 @@
             let score_wait = false;
             let miss_count = 0;
             $('body').on('keypress', function (e) {
+                var charCode = (typeof e.which == "number") ? e.which : e.keyCode;
                 switch (state) {
                     case 0:
                         // title
                         {
-                            if (e.keyCode == 13) {
+                            if (charCode == 13) {
                                 status_change(() => {
                                     $('.count_down p').text(count_down);
                                     count_down_handle = new MutekiTimer();
@@ -537,7 +538,7 @@
                                 c = input_data.text().substr(0, 1);
                                 val = c.charCodeAt(0);
                             }
-                            if (String.fromCharCode(e.keyCode).localeCompare(c, "en", { sensitivity: "base" }) == 0) {
+                            if (String.fromCharCode(charCode).localeCompare(c, "en", { sensitivity: "base" }) == 0) {
                                 $.ionSound.play("snap");
                                 input_data.text(input_data.text().slice(1));
                                 done.text(done.text() + c);
@@ -558,7 +559,7 @@
                         break;
                     case 4:
                         {
-                            if (e.keyCode == 13)
+                            if (charCode == 13)
                                 status_change(undefined, 0);
                         }
                         // result
