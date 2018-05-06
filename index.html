@@ -318,7 +318,7 @@
             { name: "クローバー", data: "kuro-ba-" },
             { name: "コココココン", data: "kokokokokokonn" },
             { name: "これがVirtualYoutuberなんだよなぁ", data: "korega virtual youtuber nandayonaa..." },
-            { name: "スッペラピッチョン2", data: "supperapichon" },
+            { name: "スッペラピッチョン2", data: "supperapicchon" },
             { name: "っく", data: "kku" },
             { name: "トレーディングカードゲーム", data: "tore-delingu ka-doge-mu" },
             { name: "ネズミの死骸", data: "nezumi no shigai" },
@@ -614,7 +614,7 @@
                 }
                 $('.wait').text(text).removeClass('break');
                 $.ionSound.play(text_data[current].name);
-                if (str_pixel(text) > window.innerWidth) {
+                if (Math.max(str_pixel(text),$('.wait').width()) > window.innerWidth) {
                     $('.done').addClass('break');
                     $('.wait').addClass('break');
                 }
