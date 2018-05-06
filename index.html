@@ -608,9 +608,9 @@
                 if(require_l2x) {
                     text = text.replace(/l([aiueot])/g,"x$1");
                 }
-                $('.wait').text().removeClass('break');
+                $('.wait').text(text).removeClass('break');
                 $.ionSound.play(text_data[current].name);
-                if (str_pixel(text_data[current].data) > window.innerWidth) {
+                if (str_pixel(text) > window.innerWidth) {
                     $('.done').addClass('break');
                     $('.wait').addClass('break');
                 }
