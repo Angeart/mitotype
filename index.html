@@ -260,6 +260,17 @@
     div#rank {
         display: inline-block;
     }
+
+    div#uzai {
+        background-image: url("./img/mito.png");
+        display: inline-block;
+        width: 200px;
+        height: 200px;
+        background-size: contain;
+        background-position: center;
+        background-repeat: no-repeat;
+        position: absolute;
+    }
 </style>
 
 <body class="state_0" oncontextmenu="return false;">
@@ -316,10 +327,12 @@
                 <p class="wait">monndai</p>
             </div>
         </div>
+        <div id="uzai"></div>
         <input type="button" class="invisible">
     </div>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
         crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.20.4/TweenMax.min.js" crossorigin="anonymous"></script>
     <script>
         $('.invisible').trigger("click");
     </script>
@@ -395,6 +408,43 @@
             multiplay: true,
             volume: 0.9
         });
+
+        var perlin = (() => {
+            function noise(x) {
+                x = (x << 13) ^ x;
+                return (1 - ((x * (x * x * 15731 + 789221) + 1376312589) & 0x7fffffff) / 1073741824);
+            }
+
+            function smooth_noise(x) {
+                return noise(x) * 0.5 + noise(x - 1) * 0.25 + noise(x + 1) * 0.25;
+            }
+
+            function cos_interpolate(a, b, x) {
+                let ft = x * Math.PI;
+                let f = (1 - Math.cos(ft)) * 0.5;
+                return a * (1 - f) + b * f;
+            }
+
+            function interpolated_noise(x) {
+                let int_x = Math.floor(x);
+                let fractional_x = x - int_x;
+                let v1 = smooth_noise(int_x);
+                let v2 = smooth_noise(int_x + 1);
+                return cos_interpolate(v1, v2, fractional_x);
+            }
+
+            function perlin(x) {
+                let total = 0;
+                let p = 1 / 4;
+                for (var i = 0; i < 6; ++i) {
+                    let freq = Math.pow(2, i);
+                    let amp = Math.pow(p, i);
+                    total += interpolated_noise(x * freq) * amp;
+                }
+                return total;
+            }
+            return perlin;
+        })();
 
         var MutekiTimer = (function () {
             var MutekiTimer = function () {
@@ -688,6 +738,33 @@
                 let remain_timer = new MutekiTimer();
                 let score_time_timer = new MutekiTimer();
                 let count_up_timer = new MutekiTimer();
+                let mitotimer = new MutekiTimer();
+                mitotimer.setInterval((() => {
+                    var date = new Date();
+                    var rand = (min, max) => { return Math.random() * (max - min) + min; };
+                    var sx = Math.floor(date.getTime() * 0.0001) * rand(1, 13);
+                    var sy = Math.floor(date.getTime() * 0.0001) * rand(1, 13);
+                    var x = 0;
+                    var y = 0;
+                    var fx = 1;
+                    var fy = 1;
+                    var imgw = $('#uzai').width();
+                    var imgh = $('#uzai').height();
+                    return () => {
+                        if (document.hidden) return;
+                        var vx = perlin(++sx) * 10;
+                        var vy = perlin(++sy) * 10;
+                        if ((x + vx * fx + imgw) > window.innerWidth || (x + vx * fx) < 0) {
+                            fx *= -1;
+                        }
+                        if ((y + vy * fy + imgh) > window.innerHeight || (y + vy * fy) < 0) {
+                            fy *= -1;
+                        }
+                        x += vx * fx;
+                        y += vy * fy;
+                        $('#uzai').css('transform', 'translate(' + x + 'px,' + y + 'px)');
+                    };
+                })(), 100);
                 function clear_count_up_timer() {
                     if (state == 3) {
                         count_up_timer.clearInterval();
@@ -701,6 +778,7 @@
                     if (remain == 0) {
                         remain_timer.clearInterval();
                         score_time_timer.clearInterval();
+                        mitotimer.clearInterval();
                         status_change(clear_count_up_timer);
                     }
                 }, 1000);
