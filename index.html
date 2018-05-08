@@ -1485,6 +1485,10 @@
             let miss_count = 0;
             let replace_map = [];
             let ikirito_time = false;
+            let remain_timer = null;
+            let score_time_timer = null;
+            let count_up_timer = null;
+            let mitotimer = null;
             $('body').on('keypress', function (e) {
                 var charCode = (typeof e.which == "number") ? e.which : e.keyCode;
                 switch (state) {
@@ -1591,7 +1595,7 @@
                 }
                 $('.done').text('').removeClass('break');
                 let text = text_data[current].data;
-                if(ikirito_time == true) {
+                if (ikirito_time == true) {
                     text = ikirito_data.data;
                     $('.timer > p').text('イキリトタイム');
                 }
@@ -1646,10 +1650,10 @@
                 if (!first) return;
                 first = true;
 
-                let remain_timer = new MutekiTimer();
-                let score_time_timer = new MutekiTimer();
-                let count_up_timer = new MutekiTimer();
-                let mitotimer = new MutekiTimer();
+                remain_timer = new MutekiTimer();
+                score_time_timer = new MutekiTimer();
+                count_up_timer = new MutekiTimer();
+                mitotimer = new MutekiTimer();
                 mitotimer.setInterval((() => {
                     var date = new Date();
                     var rand = (min, max) => { return Math.random() * (max - min) + min; };
