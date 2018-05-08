@@ -15,6 +15,7 @@
 
 <head>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/siimple@3.0.0/dist/siimple.min.css">
+    <link rel="stylesheet" href="./css/modaal.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -23,8 +24,13 @@
     <title>みとたいぴんぐ</title>
 </head>
 <style>
-    * {
-        transition-duration: 1s;
+    html {
+        font-size: calc(100vw / 100);
+    }
+
+    .trans,
+    .trans * {
+        transition-duration: 0.6s;
     }
 
     body {
@@ -36,8 +42,9 @@
         background-image: url(./img/mito01.jpg);
         background-blend-mode: screen;
         background-color: #888;
-        background-size: contain;
+        background-size: cover;
         background-position: center;
+        background-repeat: no-repeat;
     }
 
     .input {
@@ -76,6 +83,7 @@
 
     .input {
         z-index: -1;
+        text-align: center;
     }
 
     .input>#main {
@@ -88,15 +96,15 @@
 
     .timer>p {
         text-align: center;
-        font-size: 4em;
+        font-size: 4rem;
         margin-top: 0px;
-        margin-bottom: 0.2em;
+        margin-bottom: 0.2rem;
         color: #ff91dc;
     }
 
     .score p {
         text-align: center;
-        font-size: 2em;
+        font-size: 2rem;
         margin-top: 0px;
     }
 
@@ -109,10 +117,10 @@
 
     .mondai p {
         text-align: center;
-        font-size: 5em;
+        font-size: 5rem;
         display: inline-block;
         margin-top: 0px;
-        margin-bottom: 0.2em;
+        margin-bottom: 0.2rem;
         white-space: pre;
     }
 
@@ -129,7 +137,7 @@
     }
 
     .start p.anim {
-        font-size: 4em;
+        font-size: 4rem;
         animation-name: start;
         animation-duration: 3s;
         animation-iteration-count: infinite;
@@ -137,13 +145,13 @@
 
     @keyframes start {
         0% {
-            font-size: 4em;
+            font-size: 4rem;
         }
         50% {
-            font-size: 3.9em;
+            font-size: 3.9rem;
         }
         100% {
-            font-size: 4em;
+            font-size: 4rem;
         }
     }
 
@@ -158,7 +166,7 @@
 
     .count_down p {
         color: #fff;
-        font-size: 7em;
+        font-size: 7rem;
         margin: 0px;
     }
 
@@ -178,7 +186,7 @@
     .result .score_result>p {
         text-align: center;
         margin-top: 0px;
-        font-size: 4em;
+        font-size: 4rem;
     }
 
     .score_result p::before {
@@ -191,17 +199,17 @@
 
     .trophy p {
         text-align: center;
-        font-size: 2em;
+        font-size: 2rem;
     }
 
     .msg p {
         text-align: center;
-        font-size: 1em;
+        font-size: 1rem;
     }
 
     #title {
-        font-size: 10em;
-        margin-bottom: -0.5em;
+        font-size: 10rem;
+        margin-bottom: -0.5rem;
     }
 
     .invisible {
@@ -234,7 +242,7 @@
     }
 
     .small {
-        font-size: 1.5em;
+        font-size: 1.5rem;
     }
 
     span#erufu {
@@ -270,28 +278,344 @@
         background-position: center;
         background-repeat: no-repeat;
         position: absolute;
-        top:0px;
-        left:0px;
+        top: 0px;
+        left: 0px;
+    }
+
+    #option_modal {
+        display: none;
+    }
+
+    .toggle-buttons {
+        display: flex;
+    }
+
+    .toggle-buttons.vertical {
+        flex-direction: column;
+    }
+
+    .toggle-buttons label {
+        display: flex;
+        position: relative;
+    }
+
+    .toggle-buttons [type=radio],
+    .toggle-buttons [type=checkbox] {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+    }
+
+    /* appearance: none; for IE11 */
+
+    _:-ms-lang(x)::-ms-backdrop,
+    .toggle-buttons [type=radio],
+    _:-ms-lang(x)::-ms-backdrop,
+    .toggle-buttons [type=checkbox] {
+        visibility: hidden;
+    }
+
+    .toggle-buttons * {
+        transition-duration: 0.5s;
+        transition-property: opacity, color, background-color, border-color;
+    }
+
+    .toggle-buttons .button {
+        z-index: 1;
+    }
+
+    .toggle-buttons.vertical .button {
+        width: 100%;
+    }
+
+    .toggle-buttons:not(.vertical) :not(:first-child) .button {
+        border-left: 0px;
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+    }
+
+    .toggle-buttons:not(.vertical) :not(:last-child) .button {
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+        border-right: 0px;
+    }
+
+    .toggle-buttons.vertical :not(:first-child) .button {
+        border-top: 0px;
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+    }
+
+    .toggle-buttons.vertical :not(:last-child) .button {
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+    }
+
+    .toggle-buttons :checked+.button {
+        background-color: #345;
+        border: solid 1px #345;
+        color: #fff;
+    }
+
+    .toggle-buttons :disabled+.button {
+        cursor: not-allowed;
+        opacity: .6;
+        color: #def;
+    }
+
+    .toggle-buttons input {
+        outline: none;
+    }
+
+    .button {
+        display: inline-block;
+        padding: .5rem 1rem;
+        border-radius: 4px;
+        text-align: center;
+        color: #abb;
+        background-color: transparent;
+        cursor: pointer;
+        border: solid 1px #abb;
+        min-width: 4rem;
+    }
+
+    .button:hover {
+        background-color: #567;
+        border: solid 1px #567;
+        color: #fff
+    }
+
+    .button:disabled {
+        cursor: not-allowed;
+        opacity: .6;
+        color: #def;
+    }
+
+    .flex_center {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .flex_right {
+        display: flex;
+        justify-content: flex-end;
+        align-content: center;
+    }
+
+    .flex_between {
+        display: flex;
+        justify-content: space-between;
+        align-content: center;
+    }
+
+    .flex_around {
+        display: flex;
+        justify-content: space-around;
+        align-content: center;
+        flex-wrap: wrap;
+    }
+
+    .flex_around>div {
+        width: calc(100% / 4);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 0.1rem;
+    }
+
+    .jisseki {
+        display: inline-block;
+    }
+
+    .siimple-btn {
+        font-size: 1rem;
+        line-height: 2rem;
+        height: 2rem;
     }
 </style>
 
 <body class="state_0" oncontextmenu="return false;">
-    <div class="start">
+    <div id="option_modal">
+        <div class="flex_around">
+            <div>し</div>
+            <div>
+                <div class="toggle-buttons">
+                    <label>
+                        <input type="radio" name="si_or_shi" checked>
+                        <span class="button">shi</span>
+                    </label>
+                    <label>
+                        <input type="radio" name="si_or_shi">
+                        <span class="button">si</span>
+                    </label>
+                </div>
+            </div>
+            <div>じ</div>
+            <div>
+                <div class="toggle-buttons">
+                    <label>
+                        <input type="radio" name="zi_or_ji" checked>
+                        <span class="button">zi</span>
+                    </label>
+                    <label>
+                        <input type="radio" name="zi_or_ji">
+                        <span class="button">ji</span>
+                    </label>
+                </div>
+            </div>
+            <div>ち</div>
+            <div>
+                <div class="toggle-buttons">
+                    <label>
+                        <input type="radio" name="ti_or_chi" checked>
+                        <span class="button">ti</span>
+                    </label>
+                    <label>
+                        <input type="radio" name="ti_or_chi">
+                        <span class="button">chi</span>
+                    </label>
+                </div>
+            </div>
+            <div>しゃ</div>
+            <div>
+                <div class="toggle-buttons">
+                    <label>
+                        <input type="radio" name="sya_or_sha" checked>
+                        <span class="button">sya</span>
+                    </label>
+                    <label>
+                        <input type="radio" name="sya_or_sha">
+                        <span class="button">sha</span>
+                    </label>
+                </div>
+            </div>
+            <div>つ</div>
+            <div>
+                <div class="toggle-buttons">
+                    <label>
+                        <input type="radio" name="tu_or_tsu" checked>
+                        <span class="button">tu</span>
+                    </label>
+                    <label>
+                        <input type="radio" name="tu_or_tsu">
+                        <span class="button">tsu</span>
+                    </label>
+                </div>
+            </div>
+            <div>しゅ</div>
+            <div>
+                <div class="toggle-buttons">
+                    <label>
+                        <input type="radio" name="syu_or_shu" checked>
+                        <span class="button">syu</span>
+                    </label>
+                    <label>
+                        <input type="radio" name="syu_or_shu">
+                        <span class="button">shu</span>
+                    </label>
+                </div>
+            </div>
+            <div>ふ</div>
+            <div>
+                <div class="toggle-buttons">
+                    <label>
+                        <input type="radio" name="fu_or_hu" checked>
+                        <span class="button">fu</span>
+                    </label>
+                    <label>
+                        <input type="radio" name="fu_or_hu">
+                        <span class="button">hu</span>
+                    </label>
+                </div>
+            </div>
+            <div>しぇ</div>
+            <div>
+                <div class="toggle-buttons">
+                    <label>
+                        <input type="radio" name="sye_or_she" checked>
+                        <span class="button">sye</span>
+                    </label>
+                    <label>
+                        <input type="radio" name="sye_or_she">
+                        <span class="button">she</span>
+                    </label>
+                </div>
+            </div>
+            <div>ん</div>
+            <div>
+                <div class="toggle-buttons">
+                    <label>
+                        <input type="radio" name="n_or_nn" checked>
+                        <span class="button">n</span>
+                    </label>
+                    <label>
+                        <input type="radio" name="n_or_nn">
+                        <span class="button">nn</span>
+                    </label>
+                </div>
+            </div>
+            <div>しょ</div>
+            <div>
+                <div class="toggle-buttons">
+                    <label>
+                        <input type="radio" name="syo_or_sho" checked>
+                        <span class="button">syo</span>
+                    </label>
+                    <label>
+                        <input type="radio" name="syo_or_sho">
+                        <span class="button">sho</span>
+                    </label>
+                </div>
+            </div>
+            <div>ぁ</div>
+            <div>
+                <div class="toggle-buttons">
+                    <label>
+                        <input type="radio" name="xa_or_la" checked>
+                        <span class="button">xa</span>
+                    </label>
+                    <label>
+                        <input type="radio" name="xa_or_la">
+                        <span class="button">la</span>
+                    </label>
+                </div>
+            </div>
+            <div>じゃ</div>
+            <div>
+                <div class="toggle-buttons">
+                    <label>
+                        <input type="radio" name="zya_or_jya_ja" checked>
+                        <span class="button">zya</span>
+                    </label>
+                    <label>
+                        <input type="radio" name="zya_or_jya_ja">
+                        <span class="button">jya</span>
+                    </label>
+                    <label>
+                        <input type="radio" name="zya_or_jya_ja">
+                        <span class="button">ja</span>
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="start trans">
         <p id="title">みとたいぴんぐ</p>
         <p class="small">chrome 推奨！！</p>
-        <p class="anim">Enter で start</p>
-        <label class="siimple-label">オプション: </label>
-        <select class="siimple-select">
-            <option selected>小文字l派</option>
-            <option>小文字x派</option>
-        </select>
+        <p class="anim trans">Enter で start</p>
+        <div href="#option_modal" id="open_option" class="siimple-btn siimple-btn--navy">オプション</div>
     </div>
-    <div class="wait_screen">
+    <div class="wait_screen trans">
         <div class="count_down">
             <p></p>
         </div>
     </div>
-    <div class="result">
+    <div class="result trans">
         <div>
             <div class="score_result">
                 <p>999999</p>
@@ -310,7 +634,7 @@
             </div>
         </div>
     </div>
-    <div class="input">
+    <div class="input trans">
         <div class="timer">
             <p>99</p>
         </div>
@@ -329,7 +653,7 @@
                 <p class="wait">monndai</p>
             </div>
         </div>
-        <div id="uzai"></div>
+        <div id="uzai" class="trans"></div>
         <input type="button" class="invisible">
     </div>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
@@ -339,7 +663,9 @@
         $('.invisible').trigger("click");
     </script>
     <script src="./js/ion.sound.js"></script>
+    <script src="./js/modaal.min.js"></script>
     <script>
+        $('#open_option').modaal();
         let text_data = [
             { name: "3分とは言わず今死ね", data: "3huntoha iwazu imashine" },
             { name: "BAN", data: "ban" },
