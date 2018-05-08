@@ -1298,8 +1298,9 @@
             { name: "incorrect1" },
             { name: "people_people-stadium-applause1" },
         ];
+        let sound_data = base_sounds.concat(text_data.map((v) => { return { name: v.name }; })).concat([{ name: ikirito_data.name }]);
         $.ionSound({
-            sounds: base_sounds.concat(text_data.map((v) => { return { name: v.name }; })),
+            sounds: sound_data,
             path: "sounds/",
             preload: true,
             multiplay: true,
