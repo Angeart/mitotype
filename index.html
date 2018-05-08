@@ -792,7 +792,7 @@
                 <div class="toggle-buttons">
                     <label>
                         <input type="radio" name="tyi_or_cyi_or_chi" checked>
-                        <span class="button">tya</span>
+                        <span class="button">tyi</span>
                     </label>
                     <label>
                         <input type="radio" name="tyi_or_cyi_or_chi">
@@ -1090,6 +1090,21 @@
     <script src="./js/ion.sound.js"></script>
     <script src="./js/modaal.min.js"></script>
     <script>
+        function load() {
+            let json_data = window.localStorage.getItem('option');
+            if (json_data == null) return;
+            let data = JSON.parse(json_data);
+
+            for (var item of data) {
+                var index = 0;
+                for (var form of $('#optiondatas input[name=' + item.name + ']')) {
+                    if ($(form).next().text() == item.sel) break;
+                    index++;
+                }
+                $('#optiondatas input[name=' + item.name + ']:eq(' + index + ')').prop('checked', true);
+            }
+        }
+        load();
         function get_replace_map() {
             let replace_map = [];
             for (var item of $('#optiondatas input:checked')) {
@@ -1207,7 +1222,17 @@
             }
             str = str.replace(/_(.)/g, "$1$1");
             return str;
-        } $('#open_option').modaal();
+        } $('#open_option').modaal({
+            before_close: () => {
+                if (!window.localStorage) return;
+                let data = [];
+                for (var val of $('#optiondatas input:checked')) {
+                    data.push({ name: $(val).attr('name'), sel: $(val).next().text() });
+                }
+                let json_data = JSON.stringify(data);
+                window.localStorage.setItem('option', json_data);
+            }
+        });
         let text_data = [
             { name: "3分とは言わず今死ね", data: "3ふんとはいわずいましね", origin: "3分とは言わず今死ね" },
             { name: "BAN", data: "ban", noregex: true, origin: "BAN" },
