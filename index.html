@@ -1234,11 +1234,11 @@
             }
         });
         let text_data = [
-            { name: "3分とは言わず今死ね", data: "3ふんとはいわずいましね", origin: "3分とは言わず今死ね" },
+            { name: "3分とは言わず今死ね", data: "3ふんとはいわずにいましね", origin: "3分とは言わずに今死ね" },
             { name: "BAN", data: "ban", noregex: true, origin: "BAN" },
             { name: "BBS", data: "bbs", noregex: true, origin: "BBS" },
             { name: "linenews", data: "line news", noregex: true, origin: "line news" },
-            { name: "men is forest women is river", data: "men is forest. woman is river.", noregex: true, origin: "men is forest women is river" },
+            { name: "men is forest women is river", data: "men is forest woman is river", noregex: true, origin: "men is forest women is river" },
             { name: "oldold", data: "old old", noregex: true, origin: "old old" },
             { name: "thatplace", data: "that place", noregex: true, origin: "that place" },
             { name: "X8", data: "xxxxxxxx", noregex: true, origin: "X8回" },
@@ -1489,6 +1489,13 @@
             let score_time_timer = null;
             let count_up_timer = null;
             let mitotimer = null;
+            function clear_count_up_timer() {
+                if (state == 3) {
+                    count_up_timer.clearInterval();
+                    status_change();
+                    set_result();
+                }
+            }
             $('body').on('keypress', function (e) {
                 var charCode = (typeof e.which == "number") ? e.which : e.keyCode;
                 switch (state) {
@@ -1680,13 +1687,6 @@
                         $('#uzai').css('transform', 'translate(' + x + 'px,' + y + 'px)');
                     };
                 })(), 100);
-                function clear_count_up_timer() {
-                    if (state == 3) {
-                        count_up_timer.clearInterval();
-                        status_change();
-                        set_result();
-                    }
-                }
                 remain_timer.setInterval(() => {
                     --remain;
                     $('.timer > p').text(remain);
