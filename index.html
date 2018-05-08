@@ -1245,10 +1245,6 @@
             { name: "あっふーん", data: "あっふーん", origin: "あっふーん" },
             { name: "アナログ炬燵2", data: "あなろぐごたつ", origin: "アナログ炬燵" },
             { name: "あらまぁ", data: "あらまぁ", origin: "あらまぁ" },
-            {
-                name: "イキリト", data: "おれすがいけぼだからさwいちおうおたくだけどかのじょいるしwおれってひけないせいかくだしwそこらへんとかめっちゃにてるっていわれるwあくりょくも31きろあってwくらすのじょしにたかられるwかのじょいるからやめろwおれこれでもちゅういちですよw?かのじょはあすなにですw(きいてねぇ)",
-                origin: "俺素がイケボだからさｗ一応オタクだけど彼女いるしｗ俺ってひけない性格だしｗそこらへんとかめっちゃ似てるって言われるｗ握力も31kgあってｗクラスの女子にたかられるｗ彼女いるからやめろｗ俺これでも中1ですよｗ？彼女はアスナ似ですｗ（聞いてねぇ）"
-            },
             { name: "えやってないですよあたくし", data: "えやってないですよあたくし", origin: "えやってないですよあたくし" },
             { name: "おっなんだ？ファックだと？", data: "おっなんだ？ふぁっくだと", origin: "おっなんだ？ファックだと？" },
             { name: "おるやんけおるやんけどなたかおるやんけ", data: "おるやんけおるやんけどなたかおるやんけ", origin: "おるやんけ おるやんけ どなたかおるやんけ" },
@@ -1291,6 +1287,10 @@
             { name: "彼とチューしたいって思っちゃんたんですよねわたくし", data: "かれとちゅーしたいっておもっちゃったんですよわたくし", origin: "彼とチューしたいって思っちゃんたんですよねわたくし" },
             //{ name: "ルイズコピペ", data: "ruizu ruizu ruizu ruizu he uwaaaaaaaaaa ltu guwaa aaaaaa ruizu ruizu ruizu ruizu nuwaaahhahhahaaaa ala kunka kunka kunka kunka su-ha-su-ha- su-ha-su-ha- iinioi danala kunkun nnleahhaa ruizu furansowa tan no momoiro burondo no kami wo kunka kunka shitaiyo kunka kunka alaltu... a e tyotto matte machigaeta! mohumohu shitaiyo mohumohu mohumohu kamikamimohumohu karikarimohumohu kyunkyunkyun shousetsu 12kan no ruizu tan kawaikatta yo ala a ala uwaaaa manime 2ki housou sarete yokattayo ruizu tan alaltsu kawaii ruizu tan kawaii altu alaa komikku 2kan mo hatsubai sarete ureshiiii iyaaaaa nyaaan kyaaaaa kuwaaaaaa komikku nante genjitu janai altu shousetsu mo anime moyoku kangaetara ruizu chan ha genjitsu janai nyaaaaann nnwaaaaaaaa ahahaha sonnaaa iyaa aaha ha sonnaa harugenyaaa konna chikushoume yameteyaru genjitsu nante yame... mite...ru? hyoushie no ruizu chan ga bokuwo miteru... hyoushie no ruizu chan ga boku wo miteruzo! ruizu chan ga boku wo miteruzo sashie no ruizu chan ga boku wo miteru zo anime no ruizu chan ga bokuni hanashikaketeruzo yokattala yononaka madamada sutema sutetamonjanaine iyahhooooo! boku niha ruizu chan ga iru yattayo kethi hitori de dekiru mon! altu komikku noruizu chan iyaaaahahahaaaan ansama shi shiesuta anrietta tabasa uultu nnnn oreno omoiyo ruizu ni todoke harugenia no ruizu he todoke"},
         ];
+        let ikirito_data = {
+            name: "イキリト", data: "おれすがいけぼだからさwいちおうおたくだけどかのじょいるしwおれってひけないせいかくだしwそこらへんとかめっちゃにてるっていわれるwあくりょくも31きろあってwくらすのじょしにたかられるwかのじょいるからやめろwおれこれでもちゅういちですよw?かのじょはあすなにですw(きいてねぇ)",
+            origin: "俺素がイケボだからさｗ一応オタクだけど彼女いるしｗ俺ってひけない性格だしｗそこらへんとかめっちゃ似てるって言われるｗ握力も31kgあってｗクラスの女子にたかられるｗ彼女いるからやめろｗ俺これでも中1ですよｗ？彼女はアスナ似ですｗ（聞いてねぇ）"
+        };
         let base_sounds = [
             { name: "snap" },
             { name: "door_bell" },
@@ -1484,6 +1484,7 @@
             let score_wait = false;
             let miss_count = 0;
             let replace_map = [];
+            let ikirito_time = false;
             $('body').on('keypress', function (e) {
                 var charCode = (typeof e.which == "number") ? e.which : e.keyCode;
                 switch (state) {
@@ -1534,8 +1535,14 @@
                                     ++current;
                                     $.ionSound.play("correct2");
                                     score_calc();
-                                    set();
                                     $("#rank").append($("<span>").addClass("mori"));
+                                    if (ikirito_time == true) {
+                                        score_time_timer.clearInterval();
+                                        mitotimer.clearInterval();
+                                        status_change(clear_count_up_timer);
+                                        break;
+                                    }
+                                    set();
                                 }
                             } else {
                                 ++miss_count;
@@ -1584,12 +1591,16 @@
                 }
                 $('.done').text('').removeClass('break');
                 let text = text_data[current].data;
-                if (text_data[current].noregex === undefined) {
+                if(ikirito_time == true) {
+                    text = ikirito_data.data;
+                    $('.timer > p').text('イキリトタイム');
+                }
+                if (text_data[current].noregex === undefined || ikirito_time) {
                     text = kana2roma(text, replace_map);
                 }
                 $('.wait').text(text).removeClass('break');
-                $('#kana').text(text_data[current].origin);
-                $.ionSound.play(text_data[current].name);
+                $('#kana').text(ikirito_time == true ? ikirito_data.origin : text_data[current].origin);
+                $.ionSound.play(ikirito_time == true ? ikirito_data.name : text_data[current].name);
                 if (Math.max(str_pixel(text), $('.wait').width()) > window.innerWidth) {
                     $('.done').addClass('break');
                     $('.wait').addClass('break');
@@ -1601,7 +1612,9 @@
                 time = 0;
                 score = 0;
                 miss_count = 0;
+                ikirito_time = false;
                 $("#rank").empty()
+                $('.timer > p').text('99');
             }
             function set_result() {
                 $('.result .score_result p').text(score);
@@ -1674,10 +1687,8 @@
                     --remain;
                     $('.timer > p').text(remain);
                     if (remain == 0) {
+                        ikirito_time = true;
                         remain_timer.clearInterval();
-                        score_time_timer.clearInterval();
-                        mitotimer.clearInterval();
-                        status_change(clear_count_up_timer);
                     }
                 }, 1000);
                 score_time_timer.setInterval(() => {
