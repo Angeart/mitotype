@@ -1624,7 +1624,7 @@
                 score = 0;
                 miss_count = 0;
                 ikirito_time = false;
-                $("#rank").empty()
+                $("#rank").empty();
                 $('.timer > p').text('99');
             }
             function set_result() {
@@ -1693,6 +1693,7 @@
                     if (remain == 0) {
                         ikirito_time = true;
                         remain_timer.clearInterval();
+                        set();
                     }
                 }, 1000);
                 score_time_timer.setInterval(() => {
