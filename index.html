@@ -125,6 +125,10 @@
         white-space: pre;
     }
 
+    .mondai p.wait::first-letter {
+        color: rgb(200, 0, 120);
+    }
+
     .mondai .done {
         color: #77d433;
     }
@@ -247,7 +251,7 @@
         word-break: break-all;
         max-width: 100vw;
         white-space: normal;
-        display: inline;
+        display: inline-block;
     }
 
     .small {
@@ -268,14 +272,33 @@
         background-image: url("./img/moyasuze.png");
         display: inline-block;
         width: 64px;
-        height: 64px;
+        height: 58px;
         background-size: contain;
-        background-position: center;
-        background-repeat: no-repeat;
+        background-position-y: center;
+        background-repeat-y: no-repeat;
+        background-position-x: left;
     }
+
+    span.mori.data {
+        position: absolute;
+        left: 0px;
+        top: 0px;
+    }
+
+    span.mori.back {
+        background-image: url("./img/moyasuze2.png");
+        display: inline-block;
+        z-index: 0;
+        width: 215px;
+    }
+
 
     div#rank {
         display: inline-block;
+    }
+
+    div#rank>div {
+        position: relative;
     }
 
     div#uzai {
@@ -458,6 +481,56 @@
 
     .size07 * {
         font-size: 0.7rem;
+    }
+
+    .timer>p::before {
+        content: "🔥燃やせ🔥";
+        font-weight: bold;
+        font-size: 0rem;
+        display: block;
+        transition-duration: 1s;
+    }
+
+    body.fever .timer>p:before {
+        animation: hurueru .1s infinite, fever 1s 1;
+    }
+
+    body.fever .mondai p {
+        font-size: 12rem;
+    }
+
+    body.fever #kana {
+        font-size: 0px;
+    }
+
+    @keyframes fever {
+        0% {
+            font-size: 0rem;
+        }
+        50% {
+            font-size: 10rem;
+        }
+        100% {
+            font-size: 0rem;
+        }
+    }
+
+    @keyframes hurueru {
+        0% {
+            transform: translate(0px, 0px) rotateZ(0deg)
+        }
+        25% {
+            transform: translate(2px, 2px) rotateZ(1deg)
+        }
+        50% {
+            transform: translate(0px, 2px) rotateZ(0deg)
+        }
+        75% {
+            transform: translate(2px, 0px) rotateZ(-1deg)
+        }
+        100% {
+            transform: translate(0px, 0px) rotateZ(0deg)
+        }
     }
 </style>
 
@@ -1062,7 +1135,10 @@
         <div class="jisseki">
             <span id="erufu"></span>
             <div id="rank">
-                <span class="mori"></span>
+                <div>
+                    <span class="mori back"></span>
+                    <span class="mori data"></span>
+                </div>
             </div>
         </div>
         <div class="kana">
@@ -1085,6 +1161,7 @@
     </script>
     <script src="./js/ion.sound.js"></script>
     <script src="./js/modaal.min.js"></script>
+    <script src="./js/mt.js"></script>
     <script>
         function load() {
             let json_data = window.localStorage.getItem('option');
@@ -1210,6 +1287,7 @@
             });
             return replace_map;
         }
+        let mt = new MersenneTwister();
 
         function kana2roma(str, map) {
             str = str.replace(/っ([^なにぬねの])/g, "_$1");
@@ -1486,6 +1564,10 @@
             let score_time_timer = null;
             let count_up_timer = null;
             let mitotimer = null;
+            let fever_time = false;
+            let fever_remain = 0;
+            let fever_wait = "";
+            let fever_width = 0;
             function clear_count_up_timer() {
                 if (state == 3) {
                     count_up_timer.clearInterval();
@@ -1541,9 +1623,26 @@
                                 done.text(done.text() + c);
                                 if (input_data.text().length == 0) {
                                     ++current;
-                                    $.ionSound.play("correct2");
+                                    if (fever_time == true) {
+                                        $.ionSound.play("katana-gesture1");
+                                    } else {
+                                        $.ionSound.play("correct2");
+                                    }
+                                    let add = (20 - miss_count < 0 ? 0 : 20 - miss_count) / 20;
                                     score_calc();
-                                    $("#rank").append($("<span>").addClass("mori"));
+                                    let current_fever_width = $("#rank span.mori.data").width() + add * 43;
+                                    current_fever_width = 215 < current_fever_width ? 215 : current_fever_width;
+                                    if (fever_time == false) {
+                                        $("#rank span.mori.data").css('width', current_fever_width);
+                                    }
+                                    if (current_fever_width >= 215) {
+                                        fever_time = true;
+                                        fever_remain = 10;
+                                        $.ionSound.play("don");
+                                        $('body').addClass('fever');
+                                        $('.timer > p').text(fever_remain);
+                                        fever_width = $("#rank span.mori.data").width();
+                                    }
                                     if (ikirito_time == true) {
                                         score_time_timer.clearInterval();
                                         mitotimer.clearInterval();
@@ -1593,6 +1692,14 @@
                 miss_count = 0;
             }
             function set() {
+                if (fever_time == true) {
+                    let c = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+                    fever_wait = c[mt.nextInt(0, c.length)];
+                    $('.wait').text(fever_wait).removeClass('break');
+                    $('#kana').text(fever_wait);
+                    $('.done').text('').removeClass('break');
+                    return;
+                }
                 if (current >= text_data.length) {
                     text_data = shuffle(text_data);
                     current = 0;
@@ -1621,12 +1728,12 @@
                 score = 0;
                 miss_count = 0;
                 ikirito_time = false;
-                $("#rank").empty();
+                $("#rank span.mori.data").css('width', 0);
                 $('.timer > p').text('99');
             }
             function set_result() {
                 $('.result .score_result p').text(score);
-                let selector = Math.floor((score / max_score) * trophies.length * 1.1);
+                let selector = Math.floor((score / max_score) * trophies.length);
                 if (selector > trophies.length) selector = trophies.length - 1;
                 $('.result .trophy p').text(trophies[selector]);
             }
@@ -1685,12 +1792,24 @@
                     };
                 })(), 100);
                 remain_timer.setInterval(() => {
-                    --remain;
-                    $('.timer > p').text(remain);
-                    if (remain == 0) {
-                        ikirito_time = true;
-                        remain_timer.clearInterval();
-                        set();
+                    if (fever_time == true) {
+                        --fever_remain;
+                        $('.timer > p').text(fever_remain);
+                        $("#rank span.mori.data").css('width', fever_width * (fever_remain / 10));
+                        if (fever_remain == 0) {
+                            fever_time = false;
+                            $('body').removeClass('fever');
+                            $('.timer > p').text(remain);
+                            set();
+                        }
+                    } else {
+                        --remain;
+                        $('.timer > p').text(remain);
+                        if (remain == 0) {
+                            ikirito_time = true;
+                            remain_timer.clearInterval();
+                            set();
+                        }
                     }
                 }, 1000);
                 score_time_timer.setInterval(() => {
