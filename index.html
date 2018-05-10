@@ -532,6 +532,38 @@
             transform: translate(0px, 0px) rotateZ(0deg)
         }
     }
+
+    .input-range[type="range"] {
+        -webkit-appearance: none;
+        appearance: none;
+        background-color: #eaeaea;
+        height: 2px;
+        width: 100%;
+        border-radius: 6px;
+
+    }
+
+    .input-range[type="range"]:focus,
+    .input-range[type="range"]:active {
+        outline: none;
+    }
+
+    .input-range[type="range"]::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        cursor: pointer;
+        position: relative;
+        width: 22px;
+        height: 22px;
+        display: block;
+        background-color: #345;
+        border-radius: 50%;
+        -webkit-border-radius: 50%;
+    }
+
+    .top1rem {
+        margin-top: 1rem;
+    }
 </style>
 
 <body class="state_0" oncontextmenu="return false;">
@@ -1093,6 +1125,13 @@
                     </label>
                 </div>
             </div>
+            <div class="top1rem">音量</div>
+            <div class="top1rem">
+                <input id="volume" class="input-range" type="range" value="100">
+            </div>
+            <div class="top1rem">
+                <span id="volume_val">100</span>
+            </div>
         </div>
     </div>
     <div class="start trans">
@@ -1349,6 +1388,7 @@
             { name: "校庭に生えてる草のコンプ", data: "こうていにはえてるくさのこんぷ", origin: "校庭に生えてる草のコンプ" },
             { name: "砂糖卵小麦粉", data: "さとうたまごこむぎこ", origin: "砂糖 卵 小麦粉" },
             { name: "雑草", data: "ざっそう", origin: "雑草" },
+            { name: "んんえ゛っえへへん", data: "んえっえへへん", origin: "んえっえへへん" },
             { name: "三角関係", data: "さんかくかんけい", origin: "三角関係" },
             { name: "死んだ胎児", data: "しんだたいじ", origin: "死んだ胎児" },
             { name: "実質会食", data: "じっしつかいしょく", origin: "実質会食" },
@@ -1371,8 +1411,8 @@
             { name: "correct2" },
             { name: "incorrect1" },
             { name: "people_people-stadium-applause1" },
-            { name: "don"},
-            { name: "katana-gesture1"},
+            { name: "don" },
+            { name: "katana-gesture1" },
         ];
         let sound_data = base_sounds.concat(text_data.map((v) => { return { name: v.name }; })).concat([{ name: ikirito_data.name }]);
         $.ionSound({
@@ -1381,6 +1421,16 @@
             preload: true,
             multiplay: true,
             volume: 0.9
+        });
+        let volume = 1;
+
+        $('#volume').on('input', function () {
+            $('#volume_val').text($(this).val());
+        });
+
+        $('#volume').on('change', function () {
+            volume = $(this).val() / 100;
+            $.ionSound.play("んんえ゛っえへへん", { volume: volume });
         });
 
         var perlin = (() => {
@@ -1620,15 +1670,15 @@
                                 val = c.charCodeAt(0);
                             }
                             if (String.fromCharCode(charCode).localeCompare(c, "en", { sensitivity: "base" }) == 0) {
-                                $.ionSound.play("snap");
+                                $.ionSound.play("snap", { volume: volume });
                                 input_data.text(input_data.text().slice(1));
                                 done.text(done.text() + c);
                                 if (input_data.text().length == 0) {
                                     ++current;
                                     if (fever_time == true) {
-                                        $.ionSound.play("katana-gesture1");
+                                        $.ionSound.play("katana-gesture1", { volume: volume });
                                     } else {
-                                        $.ionSound.play("correct2");
+                                        $.ionSound.play("correct2", { volume: volume });
                                     }
                                     let add = (20 - miss_count < 0 ? 0 : 20 - miss_count) / 20;
                                     score_calc();
@@ -1637,10 +1687,10 @@
                                     if (fever_time == false) {
                                         $("#rank span.mori.data").css('width', current_fever_width);
                                     }
-                                    if (current_fever_width >= 215) {
+                                    if (fever_time == false && current_fever_width >= 215) {
                                         fever_time = true;
                                         fever_remain = 10;
-                                        $.ionSound.play("don");
+                                        $.ionSound.play("don", { volume: volume });
                                         $('body').addClass('fever');
                                         $('.timer > p').text(fever_remain);
                                         fever_width = $("#rank span.mori.data").width();
@@ -1655,7 +1705,7 @@
                                 }
                             } else {
                                 ++miss_count;
-                                $.ionSound.play("incorrect1");
+                                $.ionSound.play("incorrect1", { volume: volume * 0.8 });
                             }
                         }
                         break;
@@ -1681,6 +1731,7 @@
             }
             function score_calc() {
                 let cof = (max - time) < 0 ? 0 : (max - time);
+                if (ikirito_time == true) cof = 100;
                 cof -= (cof % 10);
                 let max_miss = 20;
                 let rate = (miss_count / max_miss);
@@ -1717,7 +1768,7 @@
                 }
                 $('.wait').text(text).removeClass('break');
                 $('#kana').text(ikirito_time == true ? ikirito_data.origin : text_data[current].origin);
-                $.ionSound.play(ikirito_time == true ? ikirito_data.name : text_data[current].name);
+                $.ionSound.play(ikirito_time == true ? ikirito_data.name : text_data[current].name, { volume: volume });
                 if (Math.max(str_pixel(text), $('.wait').width()) > window.innerWidth) {
                     $('.done').addClass('break');
                     $('.wait').addClass('break');
