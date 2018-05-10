@@ -1601,7 +1601,7 @@
                 , 'かえみとを末永くよろしくお願いします'
             ]
             let max = 1000 * 10;
-            let max_score = max * text_data.length * 0.6;
+            let max_score = max * text_data.length * 0.7;
             let current = 0;
             let time = 0;
             let score = 0;
@@ -1674,10 +1674,10 @@
                                 input_data.text(input_data.text().slice(1));
                                 done.text(done.text() + c);
                                 if (input_data.text().length == 0) {
-                                    ++current;
                                     if (fever_time == true) {
                                         $.ionSound.play("katana-gesture1", { volume: volume });
                                     } else {
+                                        ++current;
                                         $.ionSound.play("correct2", { volume: volume });
                                     }
                                     let add = (20 - miss_count < 0 ? 0 : 20 - miss_count) / 20;
@@ -1787,7 +1787,7 @@
             function set_result() {
                 $('.result .score_result p').text(score);
                 let selector = Math.floor((score / max_score) * trophies.length);
-                if (selector > trophies.length) selector = trophies.length - 1;
+                if (selector >= trophies.length) selector = trophies.length - 1;
                 $('.result .trophy p').text(trophies[selector]);
             }
             $('.tweet-share-custom').on('click', function (event) {
