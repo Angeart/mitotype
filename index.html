@@ -1804,7 +1804,7 @@
                 $('.result .trophy p').text(trophies[selector]);
             }
             $('.tweet-share-custom').on('click', function (event) {
-                if(state != 4)return;
+                if(state != 4)return false;
                 event.preventDefault();
                 var href = $(this).attr('href');
                 href += '?url=' + escape(location.origin + location.pathname);
