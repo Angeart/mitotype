@@ -564,6 +564,19 @@
     .top1rem {
         margin-top: 1rem;
     }
+
+    .mondai::after {
+        content: " ";
+        background-image: url("./img/hagaki.png");
+        height: 0px;
+        width: 0px;
+        background-size: cover;
+    }
+
+    body.fever .mondai::after {
+        height: 170px;
+        width: 120px;
+    }
 </style>
 
 <body class="state_0" oncontextmenu="return false;">
@@ -1403,7 +1416,7 @@
         ];
         let ikirito_data = {
             name: "イキリト", data: "おれすがいけぼだからさwいちおうおたくだけどかのじょいるしwおれってひけないせいかくだしwそこらへんとかめっちゃにてるっていわれるwあくりょくも31きろあってwくらすのじょしにたかられるwかのじょいるからやめろwおれこれでもちゅういちですよw?かのじょはあすなにですw(きいてねぇ)",
-            origin: "俺素がイケボだからさｗ一応オタクだけど彼女いるしｗ俺ってひけない性格だしｗそこらへんとかめっちゃ似てるって言われるｗ握力も31kgあってｗクラスの女子にたかられるｗ彼女いるからやめろｗ俺これでも中1ですよｗ？彼女はアスナ似ですｗ（聞いてねぇ）"
+            origin: "俺素がイケボだからさｗ一応オタクだけど彼女いるしｗ俺ってひけない性格だしｗそこらへんとかめっちゃ似てるって言われるｗ握力も31キロあってｗクラスの女子にたかられるｗ彼女いるからやめろｗ俺これでも中1ですよｗ？彼女はアスナ似ですｗ（聞いてねぇ）"
         };
         let base_sounds = [
             { name: "snap" },
@@ -1601,7 +1614,7 @@
                 , 'かえみとを末永くよろしくお願いします'
             ]
             let max = 1000 * 10;
-            let max_score = max * text_data.length * 0.7;
+            let max_score = max * text_data.length * 0.68;
             let current = 0;
             let time = 0;
             let score = 0;
@@ -1680,7 +1693,7 @@
                                         ++current;
                                         $.ionSound.play("correct2", { volume: volume });
                                     }
-                                    let add = (20 - miss_count < 0 ? 0 : 20 - miss_count) / 20;
+                                    let add = ((20 - miss_count < 0 ? 0 : 20 - miss_count) / 20) * 0.6;
                                     score_calc();
                                     let current_fever_width = $("#rank span.mori.data").width() + add * 43;
                                     current_fever_width = 215 < current_fever_width ? 215 : current_fever_width;
@@ -1791,6 +1804,7 @@
                 $('.result .trophy p').text(trophies[selector]);
             }
             $('.tweet-share-custom').on('click', function (event) {
+                if(state != 4)return;
                 event.preventDefault();
                 var href = $(this).attr('href');
                 href += '?url=' + escape(location.origin + location.pathname);
